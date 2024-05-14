@@ -5,9 +5,14 @@ using UnityEngine;
 public abstract class Interactible : MonoBehaviour
 {
     public string hoverMessage;
+    public bool useEvents;
     
     public void BaseInteract()
     {
+        if (useEvents)
+        {
+            GetComponent<InteractionEvents>().OnInteract.Invoke();
+        }
         Interact();
     }
 
