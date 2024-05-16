@@ -97,4 +97,12 @@ public class PlayerHealth : MonoBehaviour
         lerpTimer = 0f;
         Instantiate(healFx, healFxPos.position, Quaternion.Euler(-90, 0, 0));
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "EnemyHitBox")
+        {
+            TakeDamage(10);
+        }
+    }
 }

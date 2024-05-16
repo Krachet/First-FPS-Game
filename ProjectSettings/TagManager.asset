@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - IgnoreCollision
+  - EnemyHitBox
   layers:
   - Default
   - TransparentFX

@@ -8,6 +8,8 @@ public class Enemy : MonoBehaviour
     private StateMachine stateMachine;
     private NavMeshAgent navMeshAgent;
 
+    public GameObject target;
+
     public NavMeshAgent NavMeshAgent { get => navMeshAgent; }
 
     [SerializeField] private string currentState;
@@ -24,5 +26,24 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.GetComponent<Collider>().gameObject.tag == "Player")
+        {
+            target = other.GetComponent<Collider>().gameObject;
+            Debug.Log(target.gameObject.name);
+            stateMachine.ChangeState(stateMachine.aggroState);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.GetComponent<Collider>().gameObject.tag == "Player")
+        {
+            stateMachine.ChangeState(stateMachine.patrolState);
+            target = null;
+        }
     }
 }

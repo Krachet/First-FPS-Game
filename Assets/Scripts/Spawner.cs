@@ -7,8 +7,9 @@ public class Spawner : MonoBehaviour
     [Header("Prefabs")]
     public GameObject[] items;
     public GameObject[] props;
-    public GameObject[] enemies;
+    public GameObject enemyPrefab;
     public int maxItems;
+    public int maxEnemies;
 
     [Header("Spawn Points")]
     public Transform enemyParent;
@@ -24,12 +25,38 @@ public class Spawner : MonoBehaviour
         {
             SpawnProps();
         }   
-        SpawnEnemies();
+        for (int j = 0; j < maxEnemies; j++)
+        {
+            SpawnEnemies();
+        }
     }
 
     private void SpawnEnemies()
     {
+        int maxAttempt = 0;
+        Vector3 spawnPos = new Vector3(0, 0, 0);
+        bool canSpawnHere = false;
+        while (!canSpawnHere)
+        {
+            spawnPos = SetPosition();
+            canSpawnHere = PreventOverlapSpawn(spawnPos);
 
+            if (canSpawnHere)
+            {
+                break;
+            }
+
+            maxAttempt++;
+
+            if (maxAttempt > 50)
+            {
+                Debug.Log("MaxAttempt reached");
+                spawnPos = new Vector3(0, -1000, 0);
+                break;
+            }
+        }
+        GameObject enemy = Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
+        enemy.transform.SetParent(enemyParent);
     }
 
     private void SpawnItems()
@@ -61,7 +88,6 @@ public class Spawner : MonoBehaviour
                 break;
             }
         }
-        Debug.Log(spawnPos);
         GameObject prop = Instantiate(props[Random.Range(0, props.Length)], spawnPos, Quaternion.identity);
         prop.transform.SetParent(propParent);
     }

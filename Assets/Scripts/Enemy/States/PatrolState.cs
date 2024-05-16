@@ -27,17 +27,11 @@ public class PatrolState : BaseState
         if (enemy.NavMeshAgent.remainingDistance < 0.5f)
         {
             waitTime += Time.deltaTime;
-            if (waitTime > 3)
+            if (waitTime > 1)
             {
-                if (waypointIndex < enemy.path.waypoints.Count)
-                {
-                    waypointIndex++;
-                }
-                else
-                {
-                    waypointIndex = 0;
-                }
+                waypointIndex = Random.Range(0, enemy.path.waypoints.Count);
                 enemy.NavMeshAgent.SetDestination(enemy.path.waypoints[waypointIndex].position);
+                enemy.transform.LookAt(enemy.path.waypoints[waypointIndex].position);
                 waitTime = 0;
             }
         }
