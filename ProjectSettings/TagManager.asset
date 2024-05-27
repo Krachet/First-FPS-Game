@@ -6,6 +6,7 @@ TagManager:
   tags:
   - IgnoreCollision
   - EnemyHitBox
+  - Enemy
   layers:
   - Default
   - TransparentFX

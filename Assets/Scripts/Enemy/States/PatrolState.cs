@@ -9,12 +9,20 @@ public class PatrolState : BaseState
     public float waitTime;
     public override void OnEnter()
     {
-
+        enemy.ChangeAnim(Enemy.EnemyState.Patrol);
     }
 
     public override void OnExecute()
     {
         PatrolCycle();
+        if (enemy.CanSeePlayer())
+        {
+            stateMachine.ChangeState(new AttackState());
+        }
+        if (enemy.health <= 0)
+        {
+            stateMachine.ChangeState(new DeadState());
+        }
     }
 
     public override void OnExit()
@@ -27,7 +35,7 @@ public class PatrolState : BaseState
         if (enemy.NavMeshAgent.remainingDistance < 0.5f)
         {
             waitTime += Time.deltaTime;
-            if (waitTime > 1)
+            if (waitTime > 0.2f)
             {
                 waypointIndex = Random.Range(0, enemy.path.waypoints.Count);
                 enemy.NavMeshAgent.SetDestination(enemy.path.waypoints[waypointIndex].position);

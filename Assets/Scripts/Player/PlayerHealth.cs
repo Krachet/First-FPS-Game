@@ -6,8 +6,8 @@ using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
-    private float health;
     private float lerpTimer;
+    public float health;
     [Header("Health Bar")]
     public float maxHealth;
     public float chipSpeed;
@@ -91,7 +91,7 @@ public class PlayerHealth : MonoBehaviour
         Instantiate(damageFx, damageFxPos.position, Quaternion.identity);
     }
 
-    public void RestoreHealth(float healAmount)
+    public void Heal(float healAmount)
     {
         health += healAmount;
         lerpTimer = 0f;
@@ -100,7 +100,7 @@ public class PlayerHealth : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "EnemyHitBox")
+        if (other.gameObject.tag == "Enemy")
         {
             TakeDamage(10);
         }
